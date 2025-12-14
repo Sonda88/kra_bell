@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Campane</title>
+  <style>html,body{margin:0;padding:0;background:transparent}</style>
+</head>
+<body>
+<script>
+  const RESOURCE = GetParentResourceName ? GetParentResourceName() : "snd_bell";
+  const campana1 = new Audio("Campana.ogg");
+  const campana2 = new Audio("Campana2.ogg");
+  campana1.loop = false;
+  campana2.loop = false;
+
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+
+  window.addEventListener("message",(e)=>{
+    const d=e.data||{};
+    if(d.action==="playDirect"){
+      campana1.volume=clamp(d.volume||1,0,1);
+      campana1.currentTime=d.offset||0;
+      campana1.play().catch(()=>{});
+    }else if(d.action==="playDirect2"){
+      campana2.volume=clamp(d.volume||1,0,1);
+      campana2.currentTime=d.offset||0;
+      campana2.play().catch(()=>{});
+    }
+  });
+</script>
+</body>
+</html>
